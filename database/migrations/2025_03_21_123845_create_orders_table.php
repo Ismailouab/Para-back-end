@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->decimal('total_price', 10, 2);
             $table->enum('status', ['pending', 'completed', 'cancelled'])->default('pending');
+            $table->enum('priority', ['normal', 'urgent'])->default('normal');
             $table->timestamps();
         });
     }
