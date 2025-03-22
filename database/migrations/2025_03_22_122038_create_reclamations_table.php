@@ -9,15 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        // Orders Table
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('reclamations', function (Blueprint $table) {
             $table->id();
+            $table->text('description');
+            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->decimal('total_price', 10, 2)->nullable();
-            $table->enum('status', ['pending', 'completed', 'cancelled'])->default('pending');
-            $table->enum('priority', ['normal', 'urgent'])->default('normal');
+            $table->enum('status', ['pending', 'in_progress', 'resolved'])->default('pending'); // Complaint status
             $table->timestamps();
         });
     }
@@ -25,8 +24,8 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('reclamations');
     }
 };
