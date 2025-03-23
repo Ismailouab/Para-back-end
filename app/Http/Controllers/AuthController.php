@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +17,7 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-         // Check if the user exists and the credentials are correct
+        // Check if the user exists and the credentials are correct
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
@@ -36,7 +37,6 @@ class AuthController extends Controller
                 'role_id' => $user->role_id,
             ]
         ], 200);
-
     }
     public function register(Request $request)
     {
@@ -46,6 +46,8 @@ class AuthController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|string|min:8|confirmed',
+                'phone' => 'nullable|string|max:15', // Adjust as needed
+                'address' => 'nullable|string|max:255',
             ]);
 
             // Fetch the 'client' role by name
@@ -81,9 +83,10 @@ class AuthController extends Controller
         }
     }
 
-        public function logout(Request $request){
-                // Revoke the token that was used to authenticate the current request...
-                $request->user()->currentAccessToken()->delete();
-                return response()->json(['message' => 'Token deleted'], 200);
-        }
+    public function logout(Request $request)
+    {
+        // Revoke the token that was used to authenticate the current request...
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['message' => 'Token deleted'], 200);
+    }
 }
