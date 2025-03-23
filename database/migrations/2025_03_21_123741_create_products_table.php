@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('color');
             $table->string('taille');
-            $table->integer('quantity');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->timestamps();
         });
