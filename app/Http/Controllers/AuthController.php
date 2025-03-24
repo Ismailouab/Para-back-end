@@ -34,6 +34,8 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
+                'phone'=>$user->phone,
+                'address'=>$user->address,
                 'role_id' => $user->role_id,
             ]
         ], 200);
@@ -46,8 +48,8 @@ class AuthController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|string|min:8|confirmed',
-                'phone' => 'nullable|string|max:15', // Adjust as needed
-                'address' => 'nullable|string|max:255',
+                'phone' => 'required|string|max:15', // Adjust as needed
+                'address' => 'required|string|max:255',
             ]);
 
             // Fetch the 'client' role by name
@@ -63,8 +65,9 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'phone' => $request->phone, // Takes phone from request (null if not provided)
+                'address' => $request->address, // Takes address from request (null if not provided)
             ]);
-
             // Assign the 'client' role to the user
             $user->role()->associate($role);
             $user->save();
