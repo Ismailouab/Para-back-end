@@ -46,6 +46,14 @@ Route::middleware('auth:sanctum')->post('/users/{userId}/orders', [OrderControll
 Route::middleware('auth:sanctum')->put('/users/{userId}/orders/{id}', [OrderController::class, 'update']); // Update an order
 Route::middleware('auth:sanctum')->delete('/users/{userId}/orders/{id}', [OrderController::class, 'destroy']); // Delete an order
 
+// Reclamation Routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('users/{id}/reclamations', [ReclamationController::class, 'index']); // Get all reclamations by user
+    Route::get('users/{id}/reclamations/{reclamation}', [ReclamationController::class, 'show']); // Get a specific reclamation
+    Route::post('users/{id}/reclamations', [ReclamationController::class, 'store']); // Create a new reclamation
+    Route::put('users/{id}/reclamations/{reclamation}', [ReclamationController::class, 'update']); // Update a reclamation
+    Route::delete('users/{id}/reclamations/{reclamation}', [ReclamationController::class, 'destroy']); // Delete a reclamation
+});
 // Get authenticated user (for testing purposes)
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
