@@ -40,7 +40,7 @@ class ReclamationController extends Controller
     }
 
     // Update a reclamation
-    public function update(Request $request, Reclamation $reclamation)
+    public function update(Request $request,$id, Reclamation $reclamation)
     {
         $validated = $request->validate([
             'description' => 'sometimes|required|string',
@@ -52,7 +52,7 @@ class ReclamationController extends Controller
     }
 
     // Delete a reclamation
-    public function destroy(Reclamation $reclamation)
+    public function destroy($id,Reclamation $reclamation)
     {
         $reclamation->delete();
         return response()->json(['message' => 'Reclamation deleted successfully'], 200);
