@@ -42,12 +42,15 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
-            'image' => 'nullable|string',
+           'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'color' => 'required|string',
             'taille' => 'required|string',
             'category_id' => 'required|exists:categories,id',
         ]);
-
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $validated['image'] = 'storage/' . $path; // final path: public/storage/products/filename.jpg
+        }
         $product = Product::create($validated);
         return response()->json($product, 201);
     }
@@ -63,12 +66,15 @@ class ProductController extends Controller
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'sometimes|required|numeric',
-            'image' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'color' => 'required|string',
             'taille' => 'required|string',
             'category_id' => 'sometimes|required|exists:categories,id',
         ]);
-
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $validated['image'] = 'storage/' . $path;
+        }
         $product->update($validated);
         return response()->json($product, 200);
     }
